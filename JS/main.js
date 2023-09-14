@@ -2,6 +2,8 @@ let user;
 const storedUser = JSON.parse(localStorage.getItem('user'));
 
 if (storedUser) {
+
+   
   user = storedUser;
 }
 
@@ -20,7 +22,9 @@ loginForm.addEventListener("submit", async (e) => {
       return;
     }
     // ID exists, you can proceed with the login
-    alert("Login successful!");
+    alert("Sesión iniciada con éxito.\nAhora podés jugar a cualquier juego del casino.");
+
+
     user = { id, points };
     localStorage.setItem('user', JSON.stringify(user));
     loginDiv.style.display = "none";
@@ -31,7 +35,7 @@ loginForm.addEventListener("submit", async (e) => {
   } 
   catch (error) {
     console.error(error);
-    alert("Error fetching user data.");
+    alert("Error al buscar datos de usuario.");
   }
 });
 
@@ -71,5 +75,49 @@ async function getUserPoints(username) {
     // Handle network or other errors
     console.error("Error getting user points:", error);
     throw error;
+  }
+}
+
+function checkLogIn(element) {
+  if (user == null) {
+    let gameName = document.querySelector('#'+element.id+' div h2').textContent;
+    alert(`¡Ingresa con tu usuario para poder jugar a "${gameName}"!`);
+    document.querySelector(".login-form").classList.toggle("active");
+  }
+  else {
+    switch(element.id){
+      case 'game1':{
+        window.location.href = "Juegos/Slots/index-slot.html";
+        break;
+      }
+      case 'game2':{
+        window.location.href = "Juegos/Bingo/index.html";
+        break;
+      }
+      case 'game3':{
+        window.location.href = "Juegos/Dados/index.html";
+        break;
+      }
+      case 'game4':{
+        window.location.href = "Juegos/Ruleta/index.html";
+        break;
+      }
+      case 'game5':{
+        window.location.href = "Juegos/RascaYGana/index.html";
+        break;
+      }
+      case 'game6':{
+        window.location.href = "Juegos/Blackjack/index.html";
+        break;
+      }
+      case 'game7':{
+        window.location.href = "Juegos/Vasos/index.html";
+        break;
+      }
+      case 'game8':{
+        window.location.href = "Juegos/CartaMayor/index.html";
+        break;
+      }
+    }
   }
 }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,22 +9,28 @@
 </head>
 <body>
     <div id="Juego">
+        <div class="contienepuntos">
+            <div class="puntos">
+                <h3 id="ptstotales__text">Puntos: CARGANDO...</h3>
+            </div>
+        </div>
+
         <div class="Apuestas">
             <button id="btn1" onclick="MostrarPantalla(1)">Apuestas</button>
-            <button id="btn2" onclick="MostrarPantalla(2)">Modificar Apuesta</button>
+            <button id="btn" class="btn" onclick="Juego()">Iniciar Juego</button>
             <button id="btn3" onclick="MostrarPantalla(3)">Instrucciones</button>
         </div>
         <div class="Mesa">
-            <button id="btn" class="btn" onclick="Juego()">Iniciar Juego</button>
+            
             <div class="Cartas">
                 <div class="CartaJugador">
                     <p id="MostrarCartaUsuario">J</p>
-                    <p id="MostrarCartaUsuario-2">J</p>
+                    <p id="MostrarCartaUsuario-2">Jugador</p>
                     <p id="MostrarCartaUsuario-3">J</p>
                 </div>
                 <div class="CartaBot">
                     <p id="MostrarCartaBot">B</p>
-                    <p id="MostrarCartaBot-2">B</p>
+                    <p id="MostrarCartaBot-2">Bot</p>
                     <p id="MostrarCartaBot-3">B</p>
                 </div>
             </div>
@@ -41,14 +47,6 @@
             </div>
         </div>
 
-        <div id="ModApuesta">
-            <div id="PantallaOculta1">
-                <h1>Modificar apuestas</h1>
-                <input type="text" id="apuesta-input" placeholder="Ingrese el monto de su apuesta">
-                <button onclick="guardarApuesta()">¡Apuesta!</button>
-            </div>
-        </div>
-
         <div id="Instrucciones">
             <div class="Fondo">
                 <div id="PantallaOculta1">
@@ -60,15 +58,22 @@
                         <br>
                         No tener saldo suficiente imposibilita el poder seguir jugando. ¡Cuida tu saldo!
                         <br>
-                        El incremento del saldo al ganar es igual a la apuesta * 1.5.
+                        El incremento del saldo al ganar es igual a la apuesta * 1.15.
                         <br>
                         Las cartas "A", "J", "Q", "K" tienen los valores de 1, 11, 12 y 13 respectivamente.
                     </p>
                 </div>
             </div>
         </div>
+
+        <div id="Volver">
+            <button onclick="VolverFuncion()">Volver</button>
+        </div>
+
+        <div class="buuton-back">
+            <a href="../../index.html" class="modal-open-2"><div><img src="./Coin-back.png" alt="" draggable="false"></div></a>
+        </div>
     </div>
-    
     <script src="CartaMayor.js"></script>
 </body>
 </html>
@@ -83,9 +88,5 @@
     |           ♥            |
     |                        |
     |                        |
-    |                        |
     |                      ♥ |
     |                      A |
-    _________________________
-2
--->

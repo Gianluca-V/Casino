@@ -1,4 +1,5 @@
-
+let user = JSON.parse(localStorage.getItem('user'));
+const betInput = document.querySelector(".bet-input");
 
 const resultDiv = document.getElementById("result-div")
 let finished = false;
@@ -100,12 +101,14 @@ function scratchPaint(event) {
         if (numbers.every((num) => num == numbers[0])) {
             resultDiv.innerHTML += '<img src="resources/win-img.png" alt="" id="result-img">'
             document.getElementById("my-canvas").style.display = "block";
-            playWinSound(); //no te olvides soft
+            playWinSound();
+            updateUserPoints(betInput.value)
         }
         else {
             resultDiv.innerHTML += '<img src="resources/lose-img.png" alt="" id="result-img">'
             document.getElementById("my-canvas").style.display = "none";
-            playLoseSound();//Otra vez, no lo pierdas de vista tonta
+            playLoseSound();
+            updateUserPoints(-betInput.value)
         }
         setTimeout(() => {
             resetGame()
@@ -163,7 +166,6 @@ canvas.addEventListener("touchend", function (event) {
 canvas.addEventListener("touchmove", scratchPaint);
 
 
-/*Todos los comentarios mulilineas tienen que estar cerrados o terminados pq sino da error y no funciona*/
 
 function playWinSound() {
     const winSound = document.getElementById('winSound');
@@ -190,6 +192,66 @@ function getRandomColor() {
     return color;
 }
 
-var confettiSettings = { target: 'my-canvas' };
-var confetti = new ConfettiGenerator(confettiSettings);
-confetti.render();
+// Function to update user points using fetch
+async function updateUserPoints(pointsToAddOrSubtract) {
+    const apiUrl = "http://localhost/server/";
+    const requestOptions = {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+            username: user.id,
+            points: pointsToAddOrSubtract,
+        }),
+    };
+
+    try {
+        response = await fetch(apiUrl, requestOptions)
+
+        if (response.ok) {
+            // Points updated successfully
+            console.log("Points updated successfully");
+            const id = user.id;
+            const points = await getUserPoints(id);
+            user = { id, points };
+            localStorage.setItem('user', JSON.stringify(user));
+        } else {
+            // Handle the error here
+            console.error("Error updating points");
+        }
+    }
+    catch (error) {
+        // Handle network or other errors
+        console.error("Error updating points:", error);
+    }
+}
+
+async function getUserPoints(username) {
+    const apiUrl = `http://localhost/server/?username=${username}`;
+
+    try {
+        const response = await fetch(apiUrl);
+        if (response.ok) {
+            const data = await response.json();
+            return data.points;
+        } else {
+            // Handle the error here
+            console.error("Error getting user points");
+            return null;
+        }
+    } catch (error) {
+        // Handle network or other errors
+        console.error("Error getting user points:", error);
+        throw error;
+    }
+}
+actualizarPuntos();
+async function actualizarPuntos() {
+  try {
+    const puntos = await getUserPoints(user.id);
+    document.getElementById("ptstotales__text").textContent = 'Puntos: ' + puntos;
+  } catch (error) {
+    console.error("Error al obtener los puntos:", error);
+  }
+}
